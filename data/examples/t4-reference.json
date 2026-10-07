@@ -1,0 +1,48 @@
+[
+  {
+    "event_id": "t4-001",
+    "timestamp": "2026-01-04T11:20:00+05:30",
+    "event_type": "PAYMENT_INITIATED",
+    "account_id": "acct-demo-t4-001",
+    "session_id": "session-t4-001",
+    "device_id": "device-t4-001",
+    "transaction": {
+      "amount": 18000,
+      "currency": "INR",
+      "direction": "OUTGOING",
+      "status": "PENDING"
+    },
+    "beneficiary": {
+      "beneficiary_id": "beneficiary-t4-001",
+      "is_new": true
+    },
+    "context": {
+      "ip_context": "normal",
+      "geo_context": "normal",
+      "hour_context": "normal"
+    }
+  },
+  {
+    "event_id": "t4-002",
+    "timestamp": "2026-01-04T11:21:00+05:30",
+    "event_type": "TRANSFER",
+    "account_id": "acct-demo-t4-001",
+    "session_id": "session-t4-001",
+    "device_id": "device-t4-001",
+    "transaction": {
+      "amount": 18000,
+      "currency": "INR",
+      "direction": "OUTGOING",
+      "status": "SUCCESS"
+    },
+    "beneficiary": {
+      "beneficiary_id": "beneficiary-t4-001",
+      "is_new": true
+    },
+    "context": {
+      "ip_context": "normal",
+      "geo_context": "normal",
+      "hour_context": "normal"
+    }
+  }
+]
