@@ -1,0 +1,203 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "VYŪH Synthetic Dataset Manifest",
+  "description": "Machine-readable provenance and quality metadata for a VYŪH synthetic dataset version.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "dataset_id",
+    "dataset_version",
+    "generator_version",
+    "schema_version",
+    "config_version",
+    "random_seed",
+    "created_at",
+    "status",
+    "composition",
+    "splits"
+  ],
+  "properties": {
+    "dataset_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "dataset_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "generator_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "schema_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "config_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "random_seed": {
+      "type": "integer"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "DRAFT",
+        "VALIDATED",
+        "FROZEN",
+        "RETIRED"
+      ]
+    },
+    "composition": {
+      "$ref": "#/$defs/composition"
+    },
+    "splits": {
+      "$ref": "#/$defs/splits"
+    },
+    "validation": {
+      "$ref": "#/$defs/validation"
+    },
+    "quality_checks": {
+      "$ref": "#/$defs/qualityChecks"
+    },
+    "privacy_validation": {
+      "type": "string",
+      "enum": [
+        "PASS",
+        "FAIL",
+        "NOT_RUN"
+      ]
+    },
+    "golden_set": {
+      "$ref": "#/$defs/goldenSet"
+    },
+    "artifacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "dataset_fingerprint": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "$defs": {
+    "nonNegativeCount": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "composition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "total_workflows",
+        "total_events",
+        "benign",
+        "scam",
+        "T1",
+        "T2",
+        "T3",
+        "T4",
+        "T5",
+        "hard_negatives",
+        "strong_scam",
+        "moderate_scam",
+        "noisy_scam"
+      ],
+      "properties": {
+        "total_workflows": { "$ref": "#/$defs/nonNegativeCount" },
+        "total_events": { "$ref": "#/$defs/nonNegativeCount" },
+        "benign": { "$ref": "#/$defs/nonNegativeCount" },
+        "scam": { "$ref": "#/$defs/nonNegativeCount" },
+        "T1": { "$ref": "#/$defs/nonNegativeCount" },
+        "T2": { "$ref": "#/$defs/nonNegativeCount" },
+        "T3": { "$ref": "#/$defs/nonNegativeCount" },
+        "T4": { "$ref": "#/$defs/nonNegativeCount" },
+        "T5": { "$ref": "#/$defs/nonNegativeCount" },
+        "hard_negatives": { "$ref": "#/$defs/nonNegativeCount" },
+        "strong_scam": { "$ref": "#/$defs/nonNegativeCount" },
+        "moderate_scam": { "$ref": "#/$defs/nonNegativeCount" },
+        "noisy_scam": { "$ref": "#/$defs/nonNegativeCount" }
+      }
+    },
+    "splitCounts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["benign", "scam"],
+      "properties": {
+        "benign": { "$ref": "#/$defs/nonNegativeCount" },
+        "scam": { "$ref": "#/$defs/nonNegativeCount" }
+      }
+    },
+    "splits": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["development", "golden"],
+      "properties": {
+        "development": { "$ref": "#/$defs/splitCounts" },
+        "golden": { "$ref": "#/$defs/splitCounts" }
+      }
+    },
+    "validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "generated_events": { "$ref": "#/$defs/nonNegativeCount" },
+        "validated_events": { "$ref": "#/$defs/nonNegativeCount" },
+        "quarantined_events": { "$ref": "#/$defs/nonNegativeCount" },
+        "validation_failures": { "$ref": "#/$defs/nonNegativeCount" },
+        "status": {
+          "type": "string",
+          "enum": ["PASS", "FAIL", "NOT_RUN"]
+        }
+      }
+    },
+    "qualityChecks": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "duplicate_event_ids": { "$ref": "#/$defs/checkResult" },
+        "duplicate_workflow_ids": { "$ref": "#/$defs/checkResult" },
+        "temporal_ordering": { "$ref": "#/$defs/checkResult" },
+        "event_types": { "$ref": "#/$defs/checkResult" },
+        "required_fields": { "$ref": "#/$defs/checkResult" },
+        "split_leakage": { "$ref": "#/$defs/checkResult" },
+        "real_world_identifiers": { "$ref": "#/$defs/checkResult" },
+        "class_counts": { "$ref": "#/$defs/checkResult" },
+        "template_counts": { "$ref": "#/$defs/checkResult" }
+      }
+    },
+    "checkResult": {
+      "type": "string",
+      "enum": ["PASS", "FAIL", "NOT_RUN"]
+    },
+    "goldenSet": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status"],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["NOT_FROZEN", "FROZEN"]
+        },
+        "frozen_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "dataset_fingerprint": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}
