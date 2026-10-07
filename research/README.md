@@ -185,9 +185,9 @@ The repository should preserve these distinctions.
 
 | File | Purpose | Status |
 |---|---|---|
-| [threat-research.md](./threat-research.md) | Threat landscape and supporting evidence | Planned |
-| [scam-workflows.md](./scam-workflows.md) | T1–T5 workflow analysis | Planned |
-| [references.md](./references.md) | External sources and research references | Planned |
+| [threat-research.md](./threat-research.md) | Threat landscape and supporting evidence | Initial |
+| [scam-workflows.md](./scam-workflows.md) | T1–T5 workflow analysis | Canonical |
+| [references.md](./references.md) | External sources and research references | Active |
 
 ---
 
