@@ -2,219 +2,78 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/nachuuuu/VYUH/blob/main/data/schemas/event.schema.json",
   "title": "VYŪH Normalized Event",
-  "description": "Canonical normalized event schema for the VYŪH temporal risk engine.",
+  "description": "Canonical normalized event schema for the VYŪH temporal risk engine. The structural constraints in this schema are normative for schema version 0.1.",
   "type": "object",
   "additionalProperties": false,
-  "required": [
-    "event_id",
-    "timestamp",
-    "event_type",
-    "account_id"
-  ],
+  "required": ["event_id", "timestamp", "event_type", "account_id"],
   "properties": {
-    "event_id": {
-      "type": "string",
-      "minLength": 1,
-      "description": "Unique identifier for the event within the dataset."
-    },
-    "timestamp": {
-      "type": "string",
-      "format": "date-time",
-      "description": "Event occurrence time in ISO 8601 format with timezone information."
-    },
+    "event_id": {"type": "string", "minLength": 1, "description": "Unique identifier for the event within the dataset."},
+    "timestamp": {"type": "string", "format": "date-time", "description": "Event occurrence time in ISO 8601 format with timezone information."},
     "event_type": {
       "type": "string",
-      "enum": [
-        "LOGIN",
-        "AUTH_CHANGE",
-        "AUTH_FAILURE",
-        "DEVICE_CHANGE",
-        "BENEFICIARY_CREATE",
-        "BENEFICIARY_INTERACTION",
-        "PAYMENT_INITIATED",
-        "TRANSFER"
-      ],
+      "enum": ["LOGIN", "AUTH_CHANGE", "AUTH_FAILURE", "DEVICE_CHANGE", "BENEFICIARY_CREATE", "BENEFICIARY_INTERACTION", "PAYMENT_INITIATED", "TRANSFER"],
       "description": "Canonical event category."
     },
-    "account_id": {
-      "type": "string",
-      "minLength": 1,
-      "description": "Synthetic or pseudonymous account identifier."
-    },
-    "session_id": {
-      "type": "string",
-      "minLength": 1,
-      "description": "Logical session identifier when session information is available."
-    },
-    "device_id": {
-      "type": "string",
-      "minLength": 1,
-      "description": "Device identifier when device context is available."
-    },
-    "authentication": {
-      "$ref": "#/$defs/authentication"
-    },
-    "transaction": {
-      "$ref": "#/$defs/transaction"
-    },
-    "beneficiary": {
-      "$ref": "#/$defs/beneficiary"
-    },
-    "context": {
-      "$ref": "#/$defs/context"
-    },
-    "destination": {
-      "$ref": "#/$defs/destination"
-    }
+    "account_id": {"type": "string", "minLength": 1, "description": "Synthetic or pseudonymous account identifier."},
+    "session_id": {"type": "string", "minLength": 1, "description": "Logical session identifier when session information is available."},
+    "device_id": {"type": "string", "minLength": 1, "description": "Device identifier when device context is available."},
+    "authentication": {"$ref": "#/$defs/authentication"},
+    "transaction": {"$ref": "#/$defs/transaction"},
+    "beneficiary": {"$ref": "#/$defs/beneficiary"},
+    "context": {"$ref": "#/$defs/context"},
+    "destination": {"$ref": "#/$defs/destination"}
   },
   "$defs": {
     "authentication": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "method": {
-          "type": "string",
-          "minLength": 1,
-          "description": "Authentication method when known."
-        },
-        "status": {
-          "type": "string",
-          "enum": [
-            "SUCCESS",
-            "FAILURE"
-          ],
-          "description": "Authentication outcome."
-        },
-        "attempt_count": {
-          "type": "integer",
-          "minimum": 1,
-          "description": "Number of authentication attempts represented by the event."
-        }
+        "method": {"type": "string", "minLength": 1, "description": "Authentication method when known."},
+        "status": {"type": "string", "enum": ["SUCCESS", "FAILURE"], "description": "Authentication outcome."},
+        "attempt_count": {"type": "integer", "minimum": 1, "description": "Number of authentication attempts represented by the event."}
       }
     },
     "transaction": {
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "amount",
-        "currency",
-        "direction"
-      ],
+      "required": ["amount", "currency", "direction"],
       "properties": {
-        "amount": {
-          "type": "number",
-          "exclusiveMinimum": 0,
-          "description": "Transaction amount."
-        },
-        "currency": {
-          "type": "string",
-          "const": "INR",
-          "description": "Currency code for the current VYŪH project scope."
-        },
-        "direction": {
-          "type": "string",
-          "enum": [
-            "INCOMING",
-            "OUTGOING"
-          ],
-          "description": "Transaction direction relative to the account."
-        },
-        "status": {
-          "type": "string",
-          "enum": [
-            "SUCCESS",
-            "FAILED",
-            "PENDING"
-          ],
-          "description": "Transaction processing status when available."
-        }
+        "amount": {"type": "number", "exclusiveMinimum": 0, "description": "Transaction amount; must be greater than zero in schema v0.1."},
+        "currency": {"type": "string", "const": "INR", "description": "Currency code for the current VYŪH project scope."},
+        "direction": {"type": "string", "enum": ["INCOMING", "OUTGOING"], "description": "Transaction direction relative to the account."},
+        "status": {"type": "string", "enum": ["SUCCESS", "FAILED", "PENDING"], "description": "Transaction processing status when available."}
       }
     },
     "beneficiary": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "beneficiary_id": {
-          "type": "string",
-          "minLength": 1,
-          "description": "Synthetic or pseudonymous beneficiary identifier."
-        },
-        "is_new": {
-          "type": "boolean",
-          "description": "Normalized beneficiary novelty state for the event."
-        }
+        "beneficiary_id": {"type": "string", "minLength": 1, "description": "Synthetic or pseudonymous beneficiary identifier."},
+        "is_new": {"type": "boolean", "description": "Normalized beneficiary novelty state for the event."}
       }
     },
     "context": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "ip_context": {
-          "type": "string",
-          "enum": [
-            "normal",
-            "new",
-            "unusual"
-          ],
-          "description": "Normalized IP/network context when available."
-        },
-        "geo_context": {
-          "type": "string",
-          "enum": [
-            "normal",
-            "new",
-            "unusual"
-          ],
-          "description": "Normalized geographic context when available."
-        },
-        "hour_context": {
-          "type": "string",
-          "enum": [
-            "normal",
-            "unusual"
-          ],
-          "description": "Whether the event occurred during an unusual hour for the account."
-        }
+        "ip_context": {"type": "string", "enum": ["normal", "new", "unusual"], "description": "Normalized IP/network context when available."},
+        "geo_context": {"type": "string", "enum": ["normal", "new", "unusual"], "description": "Normalized geographic context when available."},
+        "hour_context": {"type": "string", "enum": ["normal", "unusual"], "description": "Whether the event occurred during an unusual hour for the account."}
       }
     },
     "destination": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "destination_id": {
-          "type": "string",
-          "minLength": 1,
-          "description": "Synthetic or pseudonymous destination identifier."
-        },
-        "network_risk": {
-          "type": "number",
-          "minimum": 0,
-          "maximum": 1,
-          "description": "Normalized destination/network risk context when available."
-        }
+        "destination_id": {"type": "string", "minLength": 1, "description": "Synthetic or pseudonymous destination identifier."},
+        "network_risk": {"type": "number", "minimum": 0, "maximum": 1, "description": "Normalized destination/network risk context when available."}
       }
     }
   },
   "allOf": [
     {
-      "if": {
-        "properties": {
-          "event_type": {
-            "enum": [
-              "PAYMENT_INITIATED",
-              "TRANSFER"
-            ]
-          }
-        },
-        "required": [
-          "event_type"
-        ]
-      },
-      "then": {
-        "required": [
-          "transaction"
-        ]
-      }
+      "if": {"properties": {"event_type": {"enum": ["PAYMENT_INITIATED", "TRANSFER"]}}, "required": ["event_type"]},
+      "then": {"required": ["transaction"]}
     }
   ]
 }
