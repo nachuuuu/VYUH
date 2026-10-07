@@ -1,0 +1,101 @@
+[
+  {
+    "event_id": "t1-001",
+    "timestamp": "2026-01-01T10:00:00+05:30",
+    "event_type": "TRANSFER",
+    "account_id": "acct-demo-001",
+    "session_id": "session-t1-001",
+    "device_id": "device-old-001",
+    "transaction": {
+      "amount": 1200,
+      "currency": "INR",
+      "direction": "OUTGOING",
+      "status": "SUCCESS"
+    },
+    "beneficiary": {
+      "beneficiary_id": "beneficiary-existing-001",
+      "is_new": false
+    },
+    "context": {
+      "ip_context": "normal",
+      "geo_context": "normal",
+      "hour_context": "normal"
+    }
+  },
+  {
+    "event_id": "t1-002",
+    "timestamp": "2026-01-01T10:02:00+05:30",
+    "event_type": "LOGIN",
+    "account_id": "acct-demo-001",
+    "session_id": "session-t1-002",
+    "device_id": "device-new-001",
+    "authentication": {
+      "method": "PASSWORD",
+      "status": "SUCCESS",
+      "attempt_count": 1
+    },
+    "context": {
+      "ip_context": "new",
+      "geo_context": "unusual",
+      "hour_context": "normal"
+    }
+  },
+  {
+    "event_id": "t1-003",
+    "timestamp": "2026-01-01T10:05:00+05:30",
+    "event_type": "BENEFICIARY_CREATE",
+    "account_id": "acct-demo-001",
+    "session_id": "session-t1-002",
+    "device_id": "device-new-001",
+    "beneficiary": {
+      "beneficiary_id": "beneficiary-new-001",
+      "is_new": true
+    }
+  },
+  {
+    "event_id": "t1-004",
+    "timestamp": "2026-01-01T10:06:00+05:30",
+    "event_type": "TRANSFER",
+    "account_id": "acct-demo-001",
+    "session_id": "session-t1-002",
+    "device_id": "device-new-001",
+    "transaction": {
+      "amount": 48000,
+      "currency": "INR",
+      "direction": "OUTGOING",
+      "status": "SUCCESS"
+    },
+    "beneficiary": {
+      "beneficiary_id": "beneficiary-new-001",
+      "is_new": true
+    },
+    "context": {
+      "ip_context": "new",
+      "geo_context": "unusual",
+      "hour_context": "normal"
+    }
+  },
+  {
+    "event_id": "t1-005",
+    "timestamp": "2026-01-01T10:08:00+05:30",
+    "event_type": "TRANSFER",
+    "account_id": "acct-demo-001",
+    "session_id": "session-t1-002",
+    "device_id": "device-new-001",
+    "transaction": {
+      "amount": 15000,
+      "currency": "INR",
+      "direction": "OUTGOING",
+      "status": "SUCCESS"
+    },
+    "beneficiary": {
+      "beneficiary_id": "beneficiary-new-001",
+      "is_new": true
+    },
+    "context": {
+      "ip_context": "new",
+      "geo_context": "unusual",
+      "hour_context": "normal"
+    }
+  }
+]
