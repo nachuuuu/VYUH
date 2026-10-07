@@ -1,6 +1,6 @@
 # VYŪH Event Schema
 
-**Status:** Canonical schema specification
+**Status:** Canonical schema specification  
 **Schema version:** 0.1
 
 ## Purpose
@@ -26,6 +26,8 @@ The event schema must:
 - remain suitable for synthetic-data generation
 - support deterministic replay and evaluation
 
+The machine-readable contract in `event.schema.json` is normative for structural validation. The constraints documented below are therefore part of schema v0.1 unless explicitly marked as implementation-dependent.
+
 ---
 
 ## Canonical Event Object
@@ -48,7 +50,7 @@ A normalized event has the following conceptual structure:
 }
 ```
 
-The example is illustrative. Optional objects should be omitted or left empty when the corresponding context is not part of the event.
+The example is illustrative. Optional objects should be omitted when the corresponding context is not part of the event.
 
 ---
 
@@ -58,7 +60,7 @@ The example is illustrative. Optional objects should be omitted or left empty wh
 |---|---|---:|---|
 | `event_id` | string | Yes | Unique identifier for the event within the dataset |
 | `timestamp` | ISO 8601 datetime | Yes | Event occurrence time |
-| `event_type` | enum/string | Yes | Canonical event category |
+| `event_type` | enum | Yes | Canonical event category |
 | `account_id` | string | Yes | Synthetic/pseudonymous account identifier |
 | `session_id` | string | No | Session identifier when applicable |
 | `device_id` | string | No | Device identifier when applicable |
@@ -159,6 +161,12 @@ Example:
 }
 ```
 
+Schema v0.1 constrains:
+
+- `status` to `SUCCESS` or `FAILURE`
+- `attempt_count` to an integer of at least 1
+- `method` to a non-empty string when present
+
 The exact allowed authentication methods are implementation-dependent unless defined by an upstream data source.
 
 VYŪH should not infer an authentication method that is not present in the event data.
@@ -178,12 +186,14 @@ A transaction event may contain:
 }
 ```
 
-| Field | Type | Required for transaction events | Description |
+| Field | Type | Required for transaction events | v0.1 constraint |
 |---|---|---:|---|
-| `amount` | number | Yes | Transaction amount |
-| `currency` | string | Yes | Currency code |
-| `direction` | enum | Yes | Incoming or outgoing |
-| `status` | enum | No | Transaction processing status |
+| `amount` | number | Yes | Must be greater than 0 |
+| `currency` | string | Yes | `INR` in the current project scope |
+| `direction` | enum | Yes | `INCOMING` or `OUTGOING` |
+| `status` | enum | No | `SUCCESS`, `FAILED`, or `PENDING` |
+
+For `PAYMENT_INITIATED` and `TRANSFER` events, the `transaction` object is required by schema v0.1.
 
 The current VYŪH specification is focused on behavioural and temporal detection. It does not define a complete production transaction schema.
 
@@ -201,6 +211,11 @@ Example:
   "is_new": true
 }
 ```
+
+Schema v0.1 constrains:
+
+- `beneficiary_id` to a non-empty string when present
+- `is_new` to a boolean when present
 
 The `is_new` value should represent the event's normalized novelty state, not a detector prediction.
 
@@ -222,7 +237,13 @@ Potential fields include:
 }
 ```
 
-The current VYŪH specification identifies unusual hour, IP/geo context, and authentication failures as components of session/context risk.
+Schema v0.1 constrains:
+
+- `ip_context` to `normal`, `new`, or `unusual`
+- `geo_context` to `normal`, `new`, or `unusual`
+- `hour_context` to `normal` or `unusual`
+
+These are normalized context values, not raw IP, geographic, or timestamp data.
 
 The exact raw representation and normalization of these features remains an implementation decision.
 
@@ -240,6 +261,11 @@ Example:
   "network_risk": 0.72
 }
 ```
+
+Schema v0.1 constrains:
+
+- `destination_id` to a non-empty string when present
+- `network_risk` to the inclusive range 0–1 when present
 
 A production implementation must define the authoritative source and semantics of destination/network risk.
 
@@ -294,11 +320,13 @@ A normalized event should be rejected or quarantined when:
 - `event_type` is unknown
 - `account_id` is missing
 - a required transaction field is absent from a transaction event
-- numeric values contain invalid types
+- numeric values violate the v0.1 type/range constraints
 - identifiers violate the configured format
 - event data contains prohibited real customer information in synthetic datasets
 
 Validation behaviour should be deterministic.
+
+The machine-readable JSON Schema is the structural validation authority for v0.1.
 
 ---
 
@@ -355,29 +383,46 @@ Those belong to later implementation and integration work.
 
 ## Example: Canonical T1 Sequence
 
-The following synthetic sequence demonstrates the minimum event relationships needed for the canonical T1 scenario:
+The following synthetic sequence matches the canonical T1 fixture in `data/examples/t1-canonical.json`:
 
 ```json
 [
   {
-    "event_id": "evt_001",
+    "event_id": "evt_t1_001",
+    "timestamp": "2026-10-04T10:00:00Z",
+    "event_type": "TRANSFER",
+    "account_id": "acct_001",
+    "device_id": "dev_old",
+    "transaction": {
+      "amount": 1200,
+      "currency": "INR",
+      "direction": "OUTGOING",
+      "status": "SUCCESS"
+    },
+    "beneficiary": {
+      "beneficiary_id": "ben_existing",
+      "is_new": false
+    }
+  },
+  {
+    "event_id": "evt_t1_002",
     "timestamp": "2026-10-04T10:02:00Z",
     "event_type": "LOGIN",
     "account_id": "acct_001",
     "device_id": "dev_new"
   },
   {
-    "event_id": "evt_002",
+    "event_id": "evt_t1_003",
     "timestamp": "2026-10-04T10:05:00Z",
     "event_type": "BENEFICIARY_CREATE",
     "account_id": "acct_001",
     "beneficiary": {
-      "beneficiary_id": "ben_001",
+      "beneficiary_id": "ben_new",
       "is_new": true
     }
   },
   {
-    "event_id": "evt_003",
+    "event_id": "evt_t1_004",
     "timestamp": "2026-10-04T10:06:00Z",
     "event_type": "TRANSFER",
     "account_id": "acct_001",
@@ -389,12 +434,12 @@ The following synthetic sequence demonstrates the minimum event relationships ne
       "status": "SUCCESS"
     },
     "beneficiary": {
-      "beneficiary_id": "ben_001",
+      "beneficiary_id": "ben_new",
       "is_new": true
     }
   },
   {
-    "event_id": "evt_004",
+    "event_id": "evt_t1_005",
     "timestamp": "2026-10-04T10:08:00Z",
     "event_type": "TRANSFER",
     "account_id": "acct_001",
@@ -406,7 +451,7 @@ The following synthetic sequence demonstrates the minimum event relationships ne
       "status": "SUCCESS"
     },
     "beneficiary": {
-      "beneficiary_id": "ben_001",
+      "beneficiary_id": "ben_new",
       "is_new": false
     }
   }
