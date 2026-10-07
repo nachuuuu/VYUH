@@ -16,7 +16,7 @@ The repository contains the system specification, threat model, architecture, re
 - `architecture/` — System architecture and flow diagrams
 - `research/` — Threat research, scam workflows, and references
 - `data/` — Data schemas and synthetic-data documentation
-- `submission/` — Hackathon submission artifacts
+- `submission/` — Submission-specific artifacts
 - `presentation/` — Presentation-related materials
 - `team/` — Team responsibilities and project ownership
 - `assets/` — Logos, screenshots, and other project visuals
@@ -36,10 +36,14 @@ Transaction / Behavioral Events
             ↓
          Risk Score
             ↓
-       Policy Decision
+       Policy Mapper
             ↓
-  Allow / Warn / Review / Block
+ALLOW / SOFT_PROMPT / STEP_UP_VERIFY / HOLD_FOR_REVIEW
+            ↓
+      Evidence + Human Review
 ```
+
+The scoring engine does not automatically block transactions. High-risk cases are routed to the review boundary rather than directly controlling a transaction gateway.
 
 ## Disclaimer
 
