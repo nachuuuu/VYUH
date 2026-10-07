@@ -1,11 +1,5 @@
 # VYŪH Team Responsibilities
 
-## Purpose
-
-This document defines ownership boundaries for the VYŪH project. Responsibilities are organized around the actual research and engineering work rather than a single event or submission.
-
-Ownership may evolve as the project moves from specification to implementation and validation.
-
 ## Team
 
 | Member | Primary area |
@@ -14,94 +8,55 @@ Ownership may evolve as the project moves from specification to implementation a
 | Krishna Rustagi | Frontend and analyst-facing interface |
 | Ananya Singh | Backend and service integration |
 | Ishika | Communication, presentation, and project documentation |
-| Ananya | Communication, presentation, and project documentation |
 
-These areas describe primary ownership, not exclusive contribution. Technical decisions should remain visible to the full team where they affect system behaviour.
+This is the four-member VYŪH team. Responsibilities describe primary ownership, not exclusive contribution.
 
 ## Responsibility areas
 
 ### System architecture
-
 Primary owner: **Nachiketa Jha**
 
-- Maintain the system-level architecture.
-- Maintain boundaries between normalization, session construction, detection, scoring, policy, evidence, and review.
-- Keep architectural decisions consistent with the project specification.
-- Review changes that alter system behaviour or component boundaries.
+- Maintain system-level architecture and boundaries.
 - Maintain architecture documentation and diagrams.
+- Review changes that alter system behaviour or component boundaries.
 
 ### Detection and risk intelligence
-
 Primary owner: **Nachiketa Jha**
 
 - Maintain the eight-signal detection model.
 - Maintain scam-workflow template definitions.
 - Maintain risk-score construction and policy thresholds.
 - Define detection experiments and evaluation criteria.
-- Review changes that affect false-positive or false-negative behaviour.
-
-Relevant documentation:
-
-- [`docs/detection-logic.md`](../docs/detection-logic.md)
-- [`docs/risk-scoring.md`](../docs/risk-scoring.md)
-- [`docs/threat-model.md`](../docs/threat-model.md)
-- [`research/scam-workflows.md`](../research/scam-workflows.md)
 
 ### Backend and service layer
-
 Primary owner: **Ananya Singh**
 
-- Implement backend service boundaries once implementation begins.
+- Implement backend service boundaries.
 - Integrate the detection engine with service interfaces.
-- Maintain request/response handling and validation.
-- Maintain backend tests and integration tests.
-- Document implementation decisions that affect the public system contract.
-
-Backend implementation must follow the documented event schema and detection contract rather than silently redefining them.
+- Maintain request/response handling, validation, and backend tests.
+- Document implementation decisions affecting public system contracts.
 
 ### Frontend and analyst interface
-
 Primary owner: **Krishna Rustagi**
 
-- Build the analyst-facing interface once implementation begins.
+- Build the analyst-facing interface.
 - Represent risk scores, evidence, workflow context, and policy actions clearly.
 - Preserve the distinction between automated assessment and human review.
-- Maintain frontend tests and interface documentation where required.
 
-The interface should not imply capabilities that the backend does not provide.
-
-### Research and documentation
-
-Primary owners: **Nachiketa Jha, Ishika, Ananya**
+### Research, documentation, and communication
+Primary owners: **Nachiketa Jha, Ishika**
 
 - Maintain research notes and source references.
 - Document assumptions and evidence boundaries.
-- Keep project documentation synchronized with the implemented system.
-- Distinguish observed evidence, specified behaviour, hypotheses, inferences, and implementation decisions.
-- Review public-facing claims for accuracy and support.
-
-The research layer should not introduce unsupported claims into technical documentation.
-
-### Communication and presentation
-
-Primary owners: **Ishika, Ananya**
-
-- Translate documented technical work into clear project communication.
+- Keep project documentation synchronized with implementation.
 - Maintain presentation materials and explanatory visuals.
-- Ensure claims in presentations match the project documentation.
-- Coordinate narrative consistency across project materials.
+- Ensure public-facing claims match project documentation.
 
-Presentation materials are downstream artifacts. They should not become the source of truth for system behaviour.
+Presentation materials are downstream artifacts and must not become the source of truth for system behaviour.
 
 ## Shared responsibilities
 
-All team members are responsible for:
-
-- Reviewing significant changes affecting their area.
-- Reporting inconsistencies between documentation and implementation.
-- Avoiding unsupported performance or production-readiness claims.
-- Protecting synthetic and sensitive project data.
-- Keeping changes traceable through Git history.
+All team members are responsible for reviewing significant changes affecting their area, reporting inconsistencies between documentation and implementation, avoiding unsupported performance or production-readiness claims, protecting synthetic and sensitive project data, and keeping changes traceable through Git history.
 
 ## Decision ownership
 
@@ -112,23 +67,21 @@ All team members are responsible for:
 | Risk scoring/policy | Nachiketa | Backend + research contributors |
 | Backend contract | Ananya Singh | Nachiketa |
 | Frontend behaviour | Krishna Rustagi | Backend + architecture owner |
-| Research claims | Research owners | Relevant technical owners |
-| Presentation claims | Ishika / Ananya | Relevant technical owners |
+| Research claims | Nachiketa / Ishika | Relevant technical owners |
+| Presentation claims | Ishika | Relevant technical owners |
 
 ## Documentation ownership
 
 | Area | Primary owner |
 |---|---|
-| `docs/` technical specifications | Nachiketa |
-| `architecture/` | Nachiketa |
-| `research/` | Nachiketa + research contributors |
-| `data/` contracts and generator specifications | Nachiketa |
+| docs/ technical specifications | Nachiketa |
+| architecture/ | Nachiketa |
+| research/ | Nachiketa + Ishika |
+| data/ contracts and generator specifications | Nachiketa |
 | Backend implementation | Ananya Singh |
 | Frontend implementation | Krishna Rustagi |
-| `presentation/` | Ishika + Ananya |
-| `submission/` | Team, with technical review by relevant owners |
-
-Ownership does not grant unilateral authority to change another component's contract. Cross-boundary changes should be reviewed by the affected owners.
+| presentation/ | Ishika |
+| submission/ | Team, with technical review by relevant owners |
 
 ## Current project stage
 
@@ -136,4 +89,4 @@ The project is currently prioritizing documentation, architecture, research defi
 
 Implementation responsibilities become active as the corresponding engineering components are introduced.
 
-Until then, documentation should remain the primary source of truth for intended system behaviour.
+Documentation remains the primary source of truth for intended system behaviour.
