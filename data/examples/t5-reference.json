@@ -1,0 +1,71 @@
+[
+  {
+    "event_id": "t5-001",
+    "timestamp": "2026-01-05T09:00:00+05:30",
+    "event_type": "TRANSFER",
+    "account_id": "acct-demo-t5-001",
+    "session_id": "session-t5-001",
+    "device_id": "device-t5-001",
+    "transaction": {
+      "amount": 50000,
+      "currency": "INR",
+      "direction": "INCOMING",
+      "status": "SUCCESS"
+    },
+    "beneficiary": {
+      "beneficiary_id": "source-t5-001",
+      "is_new": true
+    },
+    "context": {
+      "ip_context": "normal",
+      "geo_context": "normal",
+      "hour_context": "normal"
+    }
+  },
+  {
+    "event_id": "t5-002",
+    "timestamp": "2026-01-05T09:03:00+05:30",
+    "event_type": "TRANSFER",
+    "account_id": "acct-demo-t5-001",
+    "session_id": "session-t5-001",
+    "device_id": "device-t5-001",
+    "transaction": {
+      "amount": 20000,
+      "currency": "INR",
+      "direction": "OUTGOING",
+      "status": "SUCCESS"
+    },
+    "beneficiary": {
+      "beneficiary_id": "destination-t5-001",
+      "is_new": true
+    },
+    "context": {
+      "ip_context": "normal",
+      "geo_context": "normal",
+      "hour_context": "normal"
+    }
+  },
+  {
+    "event_id": "t5-003",
+    "timestamp": "2026-01-05T09:05:00+05:30",
+    "event_type": "TRANSFER",
+    "account_id": "acct-demo-t5-001",
+    "session_id": "session-t5-001",
+    "device_id": "device-t5-001",
+    "transaction": {
+      "amount": 18000,
+      "currency": "INR",
+      "direction": "OUTGOING",
+      "status": "SUCCESS"
+    },
+    "beneficiary": {
+      "beneficiary_id": "destination-t5-002",
+      "is_new": true
+    },
+    "context": {
+      "ip_context": "normal",
+      "geo_context": "normal",
+      "hour_context": "normal"
+    }
+  }
+]
