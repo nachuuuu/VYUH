@@ -125,14 +125,14 @@ They should not be treated as statistically representative data.
 
 The project specification defines the larger synthetic dataset as:
 
-- 5,000 benign events/workflows
-- 1,000 scam events/workflows
+- 5,000 benign workflows
+- 1,000 scam workflows
 - 200 scam cases per template
 - approximately 60% strong scam cases
 - approximately 30% moderate scam cases
 - approximately 10% noisy scam cases
 
-The exact dataset-generation process belongs in the synthetic-data pipeline and should not be inferred from these small fixtures.
+The workflows are serialized as multiple event records in the JSONL data layer. These small fixtures demonstrate event-level representations and are not statistically representative of the full dataset.
 
 ---
 
